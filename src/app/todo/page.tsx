@@ -19,6 +19,7 @@ import {
   GridRowId,
   GridRowModel,
   GridRowEditStopReasons,
+  GridToolbarExport,
 } from "@mui/x-data-grid";
 import axios from "axios";
 import moment from "moment";
@@ -59,6 +60,7 @@ function EditToolbar(props: EditToolbarProps) {
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Add record
       </Button>
+      <GridToolbarExport />
     </GridToolbarContainer>
   );
 }

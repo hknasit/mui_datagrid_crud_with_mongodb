@@ -13,6 +13,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function Copyright(props: any) {
   return (
@@ -32,10 +34,8 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
-
 export default function SignIn() {
+  const router = useRouter()
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -44,6 +44,30 @@ export default function SignIn() {
       password: data.get("password"),
     });
   };
+
+  async function createNewUser() {
+    const newUser = {
+      name: "Admin",
+      password: "123456",
+    };
+    const response = await axios.post("/api/user/signup", newUser);
+    axios.get("", { params: { name: "Admin", password: "123456" } });
+    console.log(response.data);
+  }
+
+  async function userLogin() {
+    const user = {
+      name: "Admin",
+      password: "123456",
+    };
+
+    const response = await axios.post("/api/user/login", user);
+
+    if (response.data.success) {
+      router.push('/todo')
+    }
+    console.log(response.data);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -91,6 +115,7 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={userLogin}
           >
             Sign In
           </Button>
@@ -108,6 +133,7 @@ export default function SignIn() {
           </Grid>
         </Box>
       </Box>
+      {/* <Button onClick={createNewUser}>New User</Button> */}
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
